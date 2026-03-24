@@ -5,6 +5,7 @@ import com.kcode.web.dto.chat.ChatResponse;
 import io.agentscope.core.agent.EventType;
 import io.agentscope.core.agent.StreamOptions;
 import io.agentscope.core.message.Msg;
+import io.agentscope.core.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -98,6 +99,10 @@ public class ChatService {
                     .doOnComplete(() -> sessionCacheService.saveSessionToStorage(instance))
                     .onErrorResume(e -> {
                         logger.error("会话 {} 处理消息出错: {}", sessionId, e.getMessage(), e);
+                        Model model = instance.agent().getModel();
+                        if (model == null) {
+                            return Flux.just(ChatResponse.error(sessionId, "处理消息出错，没有可用的模型"));
+                        }
                         return Flux.just(ChatResponse.error(sessionId, e.getMessage()));
                     });
         });
