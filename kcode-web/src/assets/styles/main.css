@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 全局样式 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 代码块样式 */
+pre {
+  @apply bg-slate-100 rounded-lg p-4 overflow-x-auto border border-slate-200;
+}
+
+code {
+  @apply text-sm;
+}
+
+pre code {
+  @apply text-slate-800;
+}
+
+p code {
+  @apply bg-slate-100 px-1.5 py-0.5 rounded text-primary-600 border border-slate-200;
+}
+
+/* Markdown 样式 */
+.markdown-content {
+  @apply leading-relaxed;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  @apply font-semibold mb-2 mt-4;
+}
+
+.markdown-content h1 {
+  @apply text-xl;
+}
+
+.markdown-content h2 {
+  @apply text-lg;
+}
+
+.markdown-content h3 {
+  @apply text-base;
+}
+
+.markdown-content p {
+  @apply mb-3;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  @apply mb-3 pl-6;
+}
+
+.markdown-content li {
+  @apply mb-1;
+}
+
+.markdown-content a {
+  @apply text-primary-600 hover:underline;
+}
+
+.markdown-content blockquote {
+  @apply border-l-4 border-slate-300 pl-4 italic text-slate-600;
+}
+
+/* 消息文本块样式 */
+.message-text-block {
+  @apply leading-relaxed;
+}
+
+/* AI 助手消息样式 */
+.message-assistant {
+  @apply text-slate-700;
+}
+
+.message-assistant p {
+  @apply mb-3 last:mb-0;
+}
+
+.message-assistant ul,
+.message-assistant ol {
+  @apply my-3 pl-6;
+}
+
+.message-assistant li {
+  @apply mb-1.5;
+}
+
+.message-assistant h1,
+.message-assistant h2,
+.message-assistant h3 {
+  @apply font-semibold mb-3 mt-4 first:mt-0;
+}
+
+.message-assistant h1 {
+  @apply text-xl;
+}
+
+.message-assistant h2 {
+  @apply text-lg;
+}
+
+.message-assistant h3 {
+  @apply text-base;
+}
+
+.message-assistant a {
+  @apply text-primary-600 hover:text-primary-700 hover:underline;
+}
+
+.message-assistant blockquote {
+  @apply border-l-4 border-slate-300 pl-4 italic text-slate-600 my-3;
+}
+
+.message-assistant table {
+  @apply w-full border-collapse my-3;
+}
+
+.message-assistant th,
+.message-assistant td {
+  @apply border border-slate-200 px-3 py-2 text-left;
+}
+
+.message-assistant th {
+  @apply bg-slate-50 font-medium;
+}
+
+/* 用户消息样式 - 简洁灰白风格 */
+.message-user {
+  @apply bg-slate-100 text-slate-700 rounded-2xl rounded-tr-md px-4 py-3 text-[15px];
+}
+
+.message-user :deep(p) {
+  @apply mb-2 last:mb-0 leading-relaxed;
+}
+
+.message-user :deep(ul),
+.message-user :deep(ol) {
+  @apply my-2 pl-5;
+}
+
+.message-user :deep(li) {
+  @apply mb-1;
+}
+
+.message-user :deep(code) {
+  @apply bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-sm border-0;
+}
+
+.message-user :deep(pre) {
+  @apply bg-slate-200 border-slate-300 rounded-lg;
+}
+
+.message-user :deep(pre code) {
+  @apply bg-transparent p-0;
+}
+
+.message-user :deep(a) {
+  @apply text-primary-600 underline hover:text-primary-700;
+}
+
+.message-user :deep(blockquote) {
+  @apply border-slate-400 pl-3 italic text-slate-600;
+}
+
+/* 打字机光标 */
+.cursor-blink::after {
+  content: '▋';
+  @apply animate-typing text-primary-500;
+}
+
+/* 折叠动画 */
+.collapse-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.collapse-content.expanded {
+  max-height: 2000px;
+}

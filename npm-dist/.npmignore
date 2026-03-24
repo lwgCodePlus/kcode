@@ -1,0 +1,17 @@
+# Source project (relative to npm-dist)
+../target/
+../src/
+../pom.xml
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# Keep everything needed for npm package
+!bin/
+!scripts/
+!skills/
+!package.json
+!README.md
+!LICENSE

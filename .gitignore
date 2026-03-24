@@ -1,0 +1,56 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.AGENTS.md
+npm-dist/bin/kcode.exe
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+kcode-web/node_modules
+kcode-web/dist
+### VS Code ###
+.vscode/
+
+### AI Agent ###
+.sisyphus/
+
+### Logs ###
+*.log
+logs/
+
+### OS Files ###
+.DS_Store
+Thumbs.db
+
+### Sensitive Files ###
+.env
+*.env.local
+secrets/
+credentials.json
+
+### Temporary Files ###
+nul
+aa.bat

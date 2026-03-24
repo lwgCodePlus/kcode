@@ -1,0 +1,48 @@
+{
+  "name": "@liwenguang/kcode",
+  "version": "1.0.1",
+  "description": "使用 Java 实现的编程工具",
+  "keywords": [
+    "ai",
+    "agent",
+    "llm",
+    "cli",
+    "spring-native",
+    "graalvm"
+  ],
+  "author": "lwgCodePlus",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lwgCodePlus/kcode"
+  },
+  "bin": {
+    "kcode": "./bin/kcode.exe"
+  },
+  "files": [
+    "bin/kcode.exe",
+    "scripts/",
+    "skills/"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+    "prepack": "node scripts/prepack.js",
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "optionalDependencies": {
+    "@ast-grep/cli": "^0.42.0",
+    "agent-browser": "^0.21.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

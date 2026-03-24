@@ -1,0 +1,68 @@
+# ==================== 公共配置 ====================
+spring:
+  application:
+    name: kcode
+  main:
+    banner-mode: off
+  # 开启虚拟线程 (JDK 21+)
+  threads:
+    virtual:
+      enabled: true
+  # 默认激活 local 环境  打包使用 prod
+  profiles:
+    active: local
+
+server:
+  # 开启虚拟线程 (JDK 21+ Tomcat)
+  tomcat:
+    threads:
+      virtual: true
+    # 连接超时：等待客户端连接的时间
+    connection-timeout: 60s
+    # 最大 HTTP 请求头大小
+    max-http-request-header-size: 8KB
+  # SSE 流式响应配置
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+
+kcode:
+  model:
+    base-url: ${OPENAI_BASE_URL}
+    api-key: ${OPENAI_API_KEY}
+    model-name: ${OPENAI_MODEL_NAME}
+
+---
+# ==================== Local 环境配置 ====================
+spring:
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 8854
+
+# Local 环境日志级别
+logging:
+  level:
+    root: INFO
+    com.kcode: INFO
+
+---
+# ==================== Prod 环境配置 ====================
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+server:
+  port: 8854
+
+# Prod 环境日志级别（仅输出 ERROR）
+logging:
+  level:
+    root: ERROR
+    com.kcode: ERROR
+    # 启动成功提示日志
+    com.kcode.web.config.BrowserLauncherConfig: INFO
