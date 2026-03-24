@@ -80,9 +80,6 @@ kcode
 | API Key | API 密钥 | `sk-xxx` |
 | Model | 模型名称 | `gpt-4` |
 
-![Model Setting](modelSetting.png)
-
-
 ## 工具集
 
 KCode 提供了丰富的工具供 AI Agent 使用：
