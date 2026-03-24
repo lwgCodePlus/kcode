@@ -3,6 +3,7 @@ package com.kcode.core.config;
 import com.kcode.core.hook.AgentHook;
 import com.kcode.core.model.ModelFactory;
 import io.agentscope.core.ReActAgent;
+import io.agentscope.core.memory.InMemoryMemory;
 import io.agentscope.core.memory.Memory;
 import io.agentscope.core.memory.autocontext.AutoContextConfig;
 import io.agentscope.core.memory.autocontext.AutoContextMemory;
@@ -45,7 +46,7 @@ public class AgentFactory {
     private final SkillBox skillBox;
     private final Session session;
     private final ModelFactory modelFactory;
-    private final String agentConfig;
+    private final String agentPrompt;
     private final ExecutionConfig executionConfig;
 
     /**
@@ -62,7 +63,7 @@ public class AgentFactory {
         this.skillBox = skillBox;
         this.session = session;
         this.modelFactory = modelFactory;
-        this.agentConfig = loadAgentConfig();
+        this.agentPrompt = loadAgentPrompt();
         this.executionConfig = ExecutionConfig.builder()
                 .timeout(Duration.ofMinutes(2))
                 .maxAttempts(2)
@@ -76,23 +77,14 @@ public class AgentFactory {
      * @return AgentInstance 实例
      */
     public AgentInstance createAgent(String sessionId) {
-        Memory memory = createMemory();
-        return createAgentWithMemory(memory, sessionId);
-    }
 
-    /**
-     * 创建 Agent 实例并使用指定的 Memory
-     *
-     * @param memory    Memory 实例
-     * @param sessionId 会话ID
-     * @return AgentInstance 实例
-     */
-    public AgentInstance createAgentWithMemory(Memory memory, String sessionId) {
+        Memory memory = createAutoContextMemory();
+
         Model model = modelFactory.getModel();
 
         ReActAgent agent = ReActAgent.builder()
                 .name(PROJECT_NAME)
-                .sysPrompt(agentConfig)
+                .sysPrompt(agentPrompt)
                 .model(model)
                 .toolkit(toolkit)
                 .skillBox(skillBox)
@@ -114,11 +106,11 @@ public class AgentFactory {
     }
 
     /**
-     * 创建 Memory 实例
+     * 创建 Memory 实例,并注册 ContextOffloadTool
      *
      * @return Memory 实例
      */
-    public Memory createMemory() {
+    public Memory createAutoContextMemory() {
         AutoContextConfig config = AutoContextConfig.builder().build();
         Model model = modelFactory.getModel();
         AutoContextMemory memory = new AutoContextMemory(config, model);
@@ -126,14 +118,23 @@ public class AgentFactory {
         return memory;
     }
 
+    /**
+     * 创建 Memory 实例,用于历史消息管理（查询）
+     *
+     * @return Memory 实例
+     */
+    public Memory createMemory() {
+        return new InMemoryMemory();
+    }
+
     // ==================== 私有方法 ====================
 
     /**
-     * 从 classpath 加载 Agent 配置
+     * 从 classpath 加载 Agent prompt配置
      *
      * @return Agent 配置内容
      */
-    private String loadAgentConfig() {
+    private String loadAgentPrompt() {
         try {
             ClassPathResource resource = new ClassPathResource(AGENT_CONFIG_PATH);
             return resource.getContentAsString(StandardCharsets.UTF_8);
