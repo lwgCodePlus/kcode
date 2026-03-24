@@ -15,13 +15,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * 模型配置服务
  * <p>
- * 管理模型配置的持久化存储，支持多级配置回退：
- * <ol>
- *   <li>JSON 配置文件（运行时可修改）</li>
- *   <li>环境变量（默认回退）</li>
- * </ol>
- * <p>
- * 配置文件存储在用户主目录下的 .kcode/model-config.json
+ * 管理模型配置的持久化存储，配置文件存储在用户主目录下的 .kcode/model-config.json
  *
  * @author liwenguang
  * @since 2026/3/16
@@ -33,11 +27,6 @@ public class ModelConfigService {
 
     private static final String CONFIG_DIR = ".kcode";
     private static final String CONFIG_FILE = "model-config.json";
-
-    // 环境变量名称常量
-    private static final String ENV_BASE_URL = "OPENAI_BASE_URL";
-    private static final String ENV_API_KEY = "OPENAI_API_KEY";
-    private static final String ENV_MODEL_NAME = "OPENAI_MODEL_NAME";
 
     private final Path configPath;
     private final ObjectMapper objectMapper;
@@ -60,22 +49,13 @@ public class ModelConfigService {
 
     /**
      * 获取当前配置
-     * <p>
-     * 配置优先级：JSON 文件 > 环境变量
      *
      * @return 当前模型配置
      */
     public ModelConfigData getConfig() {
         lock.readLock().lock();
         try {
-            // 从文件加载配置
             this.currentConfig = loadConfig();
-            
-            // 如果配置不完整，从环境变量补充
-            if (!currentConfig.isValid()) {
-                this.currentConfig = fillFromEnvironment(currentConfig);
-            }
-            
             return currentConfig;
         } finally {
             lock.readLock().unlock();
@@ -163,46 +143,6 @@ public class ModelConfigService {
             logger.error("加载配置文件失败: {}", e.getMessage(), e);
         }
         return ModelConfigData.empty();
-    }
-
-    /**
-     * 从环境变量补充缺失的配置
-     *
-     * @param config 原配置
-     * @return 补充后的配置
-     */
-    private ModelConfigData fillFromEnvironment(ModelConfigData config) {
-        String baseUrl = config.baseUrl();
-        String apiKey = config.apiKey();
-        String modelName = config.modelName();
-
-        boolean updated = false;
-
-        if (baseUrl == null || baseUrl.isBlank()) {
-            baseUrl = System.getenv(ENV_BASE_URL);
-            if (baseUrl != null && !baseUrl.isBlank()) {
-                logger.debug("从环境变量获取 {}", ENV_BASE_URL);
-                updated = true;
-            }
-        }
-
-        if (apiKey == null || apiKey.isBlank()) {
-            apiKey = System.getenv(ENV_API_KEY);
-            if (apiKey != null && !apiKey.isBlank()) {
-                logger.debug("从环境变量获取 {}", ENV_API_KEY);
-                updated = true;
-            }
-        }
-
-        if (modelName == null || modelName.isBlank()) {
-            modelName = System.getenv(ENV_MODEL_NAME);
-            if (modelName != null && !modelName.isBlank()) {
-                logger.debug("从环境变量获取 {}", ENV_MODEL_NAME);
-                updated = true;
-            }
-        }
-
-        return updated ? ModelConfigData.of(baseUrl, apiKey, modelName) : config;
     }
 
     /**

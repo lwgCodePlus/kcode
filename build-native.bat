@@ -18,9 +18,9 @@ rem Set PATH with MSVC tools first
 set "PATH=%VCToolsInstallDir%\bin\Hostx64\x64;%WindowsSdkDir%bin\%WindowsSDKVersion%\x64;%PATH%"
 
 rem Set 改成自己的路径
-set "JAVA_HOME=D:\tool\jdk\graalvm-jdk-21.0.7+8.1"
+set "JAVA_HOME=D:\jdk\graalvm-jdk-21.0.7+8.1"
 set "PATH=%JAVA_HOME%\bin;%PATH%"
 
-cd /d D:\application\kcode
+cd /d D:\my-project\kcode
 mvn -Pnative native:compile
 endlocal

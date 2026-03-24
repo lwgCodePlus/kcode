@@ -69,7 +69,8 @@ public class SessionCacheService {
      * 如果会话已存在，从缓存获取；否则创建新实例
      *
      * @param sessionId 会话ID
-     * @return AgentInstance 实例
+     * @return AgentInstance 实例，如果 Model 未配置则抛出异常
+     * @throws IllegalStateException 如果 Model 未配置
      */
     public AgentInstance getOrCreate(String sessionId) {
         return sessionCache.get(sessionId, id -> {

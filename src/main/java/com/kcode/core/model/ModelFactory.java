@@ -47,7 +47,7 @@ public class ModelFactory {
      * <p>
      * 如果配置发生变化，会自动重建 Model
      *
-     * @return Model 实例
+     * @return Model 实例，如果配置无效则返回 null
      */
     public Model getModel() {
         ModelConfigData config = modelConfigService.getConfig();
@@ -58,7 +58,11 @@ public class ModelFactory {
                 if (cachedModel == null || newHash != configHash) {
                     cachedModel = createModel(config);
                     configHash = newHash;
-                    logger.info("Model 已创建: modelName={}", config.modelName());
+                    if (cachedModel != null) {
+                        logger.info("Model 已创建: modelName={}", config.modelName());
+                    } else {
+                        logger.info("Model 配置无效，未创建实例");
+                    }
                 }
             }
         }
@@ -76,7 +80,11 @@ public class ModelFactory {
             ModelConfigData config = modelConfigService.getConfig();
             cachedModel = createModel(config);
             configHash = computeConfigHash(config);
-            logger.info("Model 已重建: modelName={}", config.modelName());
+            if (cachedModel != null) {
+                logger.info("Model 已重建: modelName={}", config.modelName());
+            } else {
+                logger.info("Model 配置无效，未重建实例");
+            }
         }
     }
 
@@ -86,8 +94,7 @@ public class ModelFactory {
      * 创建 Model 实例
      *
      * @param config 模型配置
-     * @return Model 实例
-     * @throws IllegalStateException 如果配置无效
+     * @return Model 实例，如果配置无效则返回 null
      */
     private Model createModel(ModelConfigData config) {
         String baseUrl = config.baseUrl();
@@ -96,13 +103,16 @@ public class ModelFactory {
 
         // 验证必要参数
         if (baseUrl == null || baseUrl.isBlank()) {
-            throw new IllegalStateException("Model baseUrl 未配置");
+            logger.warn("Model baseUrl 未配置");
+            return null;
         }
         if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException("Model apiKey 未配置");
+            logger.warn("Model apiKey 未配置");
+            return null;
         }
         if (modelName == null || modelName.isBlank()) {
-            throw new IllegalStateException("Model modelName 未配置");
+            logger.warn("Model modelName 未配置");
+            return null;
         }
 
         return OpenAIChatModel.builder()

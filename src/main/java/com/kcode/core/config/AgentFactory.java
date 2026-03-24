@@ -74,13 +74,13 @@ public class AgentFactory {
      * 创建新的 Agent 实例
      *
      * @param sessionId 会话ID
-     * @return AgentInstance 实例
+     * @return AgentInstance 实例，如果 Model 未配置则返回 null
      */
     public AgentInstance createAgent(String sessionId) {
 
-        Memory memory = createAutoContextMemory();
-
         Model model = modelFactory.getModel();
+
+        Memory memory = createAutoContextMemory();
 
         ReActAgent agent = ReActAgent.builder()
                 .name(PROJECT_NAME)
@@ -108,11 +108,11 @@ public class AgentFactory {
     /**
      * 创建 Memory 实例,并注册 ContextOffloadTool
      *
-     * @return Memory 实例
+     * @return Memory 实例，如果 Model 未配置则返回 null
      */
     public Memory createAutoContextMemory() {
-        AutoContextConfig config = AutoContextConfig.builder().build();
         Model model = modelFactory.getModel();
+        AutoContextConfig config = AutoContextConfig.builder().build();
         AutoContextMemory memory = new AutoContextMemory(config, model);
         toolkit.registerTool(new ContextOffloadTool(memory));
         return memory;
@@ -124,7 +124,8 @@ public class AgentFactory {
      * @return Memory 实例
      */
     public Memory createMemory() {
-        return new InMemoryMemory();
+        AutoContextConfig config = AutoContextConfig.builder().build();
+        return new AutoContextMemory(config, null);
     }
 
     // ==================== 私有方法 ====================

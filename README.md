@@ -58,10 +58,10 @@ KCode 是一个基于 Spring Boot 和 [agentscope-java](https://github.com/agent
 npm install -g @liwenguang/kcode
 
 # bun
-bun add -g @liwenguang/kcode
+bun install -g @liwenguang/kcode
 
 # pnpm
-pnpm add -g @liwenguang/kcode
+pnpm install -g @liwenguang/kcode
 ```
 
 ### 运行

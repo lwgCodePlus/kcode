@@ -27,12 +27,6 @@ server:
       charset: UTF-8
       enabled: true
 
-kcode:
-  model:
-    base-url: ${OPENAI_BASE_URL}
-    api-key: ${OPENAI_API_KEY}
-    model-name: ${OPENAI_MODEL_NAME}
-
 ---
 # ==================== Local 环境配置 ====================
 spring:
