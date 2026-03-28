@@ -79,13 +79,15 @@ public class ToolRegistryConfig {
         toolkit.registerTool(new GrepAppTool());
         toolkit.registerTool(new Context7Tool());
 
-        McpClientWrapper webSearchExa = McpClientBuilder.create("web_search_exa")
-                .streamableHttpTransport("https://mcp.exa.ai/mcp")
-                .queryParam("tools", "web_search_exa")
-                .buildAsync()
-                .block();
-        toolkit.registerMcpClient(webSearchExa).block();
-
+        try {
+            McpClientWrapper webSearchExa = McpClientBuilder.create("web_search_exa")
+                    .streamableHttpTransport("https://mcp.exa.ai/mcp")
+                    .queryParam("tools", "web_search_exa")
+                    .buildAsync()
+                    .block();
+            toolkit.registerMcpClient(webSearchExa).block();
+        } catch (Exception ignored) {
+        }
         logger.info("工具注册完成");
     }
 }

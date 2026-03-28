@@ -29,9 +29,9 @@ public class AgentHook implements Hook {
 
     @Override
     public <T extends HookEvent> Mono<T> onEvent(T event) {
-        if (event instanceof PreReasoningEvent e) {
-            return handlePreReasoning(e).map(evt -> event);
-        }
+//        if (event instanceof PreReasoningEvent e) {
+//            return handlePreReasoning(e).map(evt -> event);
+//        }
         return Mono.just(event);
     }
 

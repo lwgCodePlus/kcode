@@ -21,7 +21,7 @@ public class ToolkitBeanConfig {
     public Toolkit toolkit() {
         return new Toolkit(ToolkitConfig.builder()
                 .executionConfig(ExecutionConfig.builder()
-                        .timeout(Duration.ofSeconds(180))
+                        .timeout(Duration.ofMinutes(10))
                         .build())
                 .build());
     }
